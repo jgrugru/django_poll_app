@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<div class="container">
+    <div class="jumbotron bg-light">
+        <h1 class="display-4">{{question.question_text}}</h1>
+        <a href="{% url 'polls:index' %}">Home Screen</a>
+    </div>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <hr class="my-4">
+        <!-- {% url 'polls:vote' question.id %} How does this work?-->
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        <div class="custom-control custom-radio">
+            <ul class="list-group">
+            {% for choice in question.choice_set.all %}
+                <li class=list-group-item>
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                </li>
+            {% endfor %}
+            </ul>
+
+        </div>
+        <br>
+        <ul>
+            <input type="submit" value="Vote">
+        </ul>
+    </form>
+</div>
